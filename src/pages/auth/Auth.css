@@ -1,0 +1,135 @@
+/* src/pages/auth/Auth.css */
+:root {
+  --rasoio-primary: #00d8ff;
+  --rasoio-primary-light: #33e5ff;
+  --rasoio-dark: #000000;
+  --rasoio-dark-light: #1e1e1e;
+  --rasoio-text: #e0e0e0;
+  --rasoio-accent: #0088cc;
+  --transition-fast: 0.2s ease-out;
+}
+.login-bg {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, rgba(18,18,18,0.9), var(--rasoio-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-container {
+  width: 100%;
+}
+
+.login-card {
+  background: radial-gradient(circle at top, rgba(0, 0, 0, 0.9), var(--rasoio-dark));
+  border: none;
+  border-radius: 1rem;
+  padding: 2rem 1.5rem;
+  box-shadow:
+    0 0 12px rgba(0, 216, 255, 0.4),
+    0 4px 20px rgba(0, 0, 0, 0.7);
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 3px var(--rasoio-primary),
+    0 0 16px var(--rasoio-primary-light);
+}
+
+.neon-input {
+  background: transparent;
+  color: var(--rasoio-text);
+  border: 2px solid var(--rasoio-primary);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: border var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.neon-input::placeholder {
+  color: #777;
+}
+
+.neon-input:focus {
+  outline: none;
+  border-color: var(--rasoio-accent);
+  box-shadow: 0 0 8px var(--rasoio-accent);
+  background: var(--rasoio-dark-light);
+}
+
+.neon-button {
+  background: linear-gradient(
+    90deg,
+    var(--rasoio-primary-light),
+    var(--rasoio-primary)
+  );
+  color: var(--rasoio-dark);
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  box-shadow: 0 4px 12px var(--rasoio-primary-light);
+  transition: filter var(--transition-fast), transform 0.1s;
+}
+
+.neon-button:hover {
+  filter: brightness(1.1);
+}
+
+.neon-button:active {
+  filter: brightness(0.9);
+  transform: scale(0.97);
+}
+
+.google-button {
+  background: transparent !important;
+  color: var(--rasoio-primary-light) !important;
+  border: 2px solid var(--rasoio-primary) !important;
+  border-radius: 0.75rem !important;
+  padding: 0.75rem !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  box-shadow: 0 2px 8px var(--rasoio-primary-light) !important;
+  transition: background var(--transition-fast), transform 0.1s !important;
+}
+
+.google-button:hover {
+  background: var(--rasoio-primary) !important;
+  color: var(--rasoio-dark) !important;
+}
+
+.login-links {
+  font-size: 0.9rem;
+  color: var(--rasoio-text);
+}
+
+.login-links a {
+  color: var(--rasoio-primary-light);
+  text-decoration: none;
+  margin: 0 0.5rem;
+  transition: color var(--transition-fast);
+}
+
+.login-links a:hover {
+  color: var(--rasoio-accent);
+}
+
+.sep {
+  color: #555;
+}
+
+@media (max-width: 576px) {
+  .login-card {
+    padding: 1.5rem 1rem;
+  }
+  .logo {
+    width: 66px;
+    height: 66px;
+  }
+}
