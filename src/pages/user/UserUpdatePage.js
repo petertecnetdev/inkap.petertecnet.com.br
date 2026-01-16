@@ -29,8 +29,6 @@ export default function UserUpdatePage() {
       <GlobalNav/>
 
       <div className="user-update-page">
-        <h2 className="title mb-3">Editar Perfil</h2>
-
         <UserUpdateForm
           register={register}
           handleSubmit={handleSubmit}

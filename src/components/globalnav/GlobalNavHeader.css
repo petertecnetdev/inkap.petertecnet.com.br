@@ -1,168 +1,161 @@
-/* ============================================================
-   GLOBAL NAV HEADER — RASOIO (Neon Cyan)
-============================================================ */
+/* src/components/GlobalNavHeader.css */
 
-/* ---------- Layout Geral do Header ---------- */
+/* =========================================================
+   INKAP — Global Nav Header (Top Bar)
+   ========================================================= */
 
-.globalnav__header {
-  width: 100%;
-  height: 72px;
-  background: rgba(11, 11, 12, 0.70); /* dash-bg */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* dash-border */
-  backdrop-filter: blur(16px) saturate(170%);
-  display: flex !important;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 1.4rem;
-  animation: globalNavHeaderFade 0.35s ease forwards;
-  z-index: 1000;
+:root {
+  --gnh-bg: rgba(7, 4, 15, 0.86);
+  --gnh-bg-solid: #07040f;
+  --gnh-border: rgba(255, 255, 255, 0.10);
+  --gnh-text: #f4eaff;
+  --gnh-muted: rgba(244, 234, 255, 0.72);
+  --gnh-primary: #b46cff;
+  --gnh-primary-2: #9f4dff;
 }
 
-@keyframes globalNavHeaderFade {
-  from { opacity: 0; transform: translateY(-14px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Navbar wrapper */
+.navlog__navbar.globalnav__header {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--gnh-border);
+  background: radial-gradient(900px 420px at 0% 0%, rgba(180, 108, 255, 0.18), transparent 55%),
+    radial-gradient(900px 420px at 100% 0%, rgba(159, 77, 255, 0.10), transparent 55%),
+    rgba(7, 4, 15, 0.92) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-/* ---------- Logo ---------- */
-
-.globalnav__brand,
-.globalnav__left {
+/* Layout */
+.globalnav__left,
+.globalnav__right {
   display: flex;
   align-items: center;
-  gap: 1rem;
 }
 
-.globalnav__logo {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #0baff5; /* dash-accent */
-  box-shadow: 0 0 14px rgba(11, 175, 245, 0.65);
-  transition: 0.3s ease;
+.globalnav__left {
+  gap: 12px;
+  min-width: 0;
 }
 
-.globalnav__logo:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 22px rgba(11, 175, 245, 0.85);
+.globalnav__right {
+  margin-left: auto;
 }
 
-/* ============================================================
-   MENU DESKTOP
-============================================================ */
+/* Brand */
+.navlog__brand.globalnav__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  text-decoration: none !important;
+}
 
+/* Logo image */
+.navlog__logo-image.globalnav__logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  object-fit: contain;
+  padding: 7px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(180, 108, 255, 0.35);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.navlog__logo-image.globalnav__logo:hover {
+  transform: translateY(-1px);
+  border-color: rgba(180, 108, 255, 0.55);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Desktop menu */
 .globalnav__desktop-menu {
   display: flex;
   align-items: center;
-  gap: 1.3rem;
+  gap: 10px;
+  padding-left: 6px;
+  min-width: 0;
 }
 
+/* Desktop link */
 .globalnav__desktop-link {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #e9e9ea; /* dash-text */
-  text-decoration: none;
-  padding: 0.45rem 0.7rem;
-  border-radius: 10px;
-  transition: 0.25s ease;
-  position: relative;
+  text-decoration: none !important;
+  color: var(--gnh-text);
+  padding: 10px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.15px;
+  white-space: nowrap;
+  transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
 }
 
-/* Hover elegante */
 .globalnav__desktop-link:hover {
-  color: #0baff5;
-  text-shadow: 0 0 8px rgba(11, 175, 245, 0.5);
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(180, 108, 255, 0.4);
 }
 
-/* Estado ativo */
+/* Active state */
 .globalnav__desktop-link.active {
-  color: #0baff5;
-  background: rgba(11, 175, 245, 0.15);
-  border: 1px solid rgba(11, 175, 245, 0.35);
-  box-shadow: 0 0 12px rgba(11, 175, 245, 0.35);
+  border-color: rgba(180, 108, 255, 0.6);
+  background: linear-gradient(
+    135deg,
+    rgba(180, 108, 255, 0.22),
+    rgba(159, 77, 255, 0.06)
+  );
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
 }
 
-/* Linha neon animada */
-.globalnav__desktop-link.active::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -6px;
-  height: 2px;
-  border-radius: 2px;
-  background: #0baff5;
-  box-shadow: 0 0 8px #0baff5;
-  animation: neonBar 0.35s ease;
-}
-
-@keyframes neonBar {
-  from { width: 0; opacity: 0; transform: scaleX(0); }
-  to { width: 100%; opacity: 1; transform: scaleX(1); }
-}
-
-/* ============================================================
-   BOTÃO MOBILE (cores Rasoio)
-============================================================ */
-
-.globalnav__mobile-btn {
-  font-size: 2rem;
-  background: rgba(20, 20, 22, 0.55);
-  color: #e9e9ea;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 0.35rem 0.75rem;
+/* Mobile toggle button */
+.navlog__mobile-toggle-btn.globalnav__mobile-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  border: 1px solid var(--gnh-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--gnh-text);
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 0;
   cursor: pointer;
-  transition: 0.25s ease;
-  backdrop-filter: blur(12px) saturate(140%);
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
 }
 
-.globalnav__mobile-btn:hover {
-  color: #0baff5;
-  border-color: #0baff5;
-  box-shadow: 0 0 14px rgba(11, 175, 245, 0.35);
+.navlog__mobile-toggle-btn.globalnav__mobile-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(180, 108, 255, 0.45);
 }
 
-/* Botão Login */
-.globalnav__login-btn {
-  background: rgba(20, 20, 22, 0.55);
-  padding: 0.55rem 1rem;
-  border-radius: 12px;
-  color: #e9e9ea;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  transition: 0.25s ease;
-  text-decoration: none;
-  font-weight: 500;
+/* Focus accessibility */
+.navlog__mobile-toggle-btn.globalnav__mobile-btn:focus-visible,
+.globalnav__desktop-link:focus-visible,
+.navlog__brand.globalnav__brand:focus-visible {
+  outline: 2px solid rgba(180, 108, 255, 0.7);
+  outline-offset: 2px;
+  border-radius: 16px;
 }
 
-.globalnav__login-btn:hover {
-  color: #0baff5;
-  border-color: #0baff5;
-  background: rgba(11, 175, 245, 0.12);
-  box-shadow: 0 0 14px rgba(11, 175, 245, 0.4);
-}
-
-/* ============================================================
-   RESPONSIVIDADE
-============================================================ */
-
-/* Antes você tinha escondido o menu desktop no mobile */
-@media (max-width: 991px) {
-  .globalnav__desktop-menu {
-    display: none !important;
+/* Small screens adjustments */
+@media (max-width: 420px) {
+  .navlog__navbar.globalnav__header {
+    padding: 10px 12px;
   }
-}
 
-/* Certifique-se de que navlog__mobile-menu pode aparecer em qualquer tela */
-.navlog__mobile-menu {
-  display: block; /* controlar via estado showMobileMenu */
-  position: fixed;
-  top: 72px;
-  left: 0;
-  width: 250px;
-  height: calc(100% - 72px);
-  background: rgba(11, 11, 12, 0.95);
-  z-index: 9999;
-  overflow-y: auto;
-  transition: transform 0.3s ease;
+  .navlog__logo-image.globalnav__logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 15px;
+  }
+
+  .navlog__mobile-toggle-btn.globalnav__mobile-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 15px;
+  }
 }

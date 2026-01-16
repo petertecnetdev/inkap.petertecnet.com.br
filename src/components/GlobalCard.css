@@ -1,53 +1,54 @@
 /* =========================================================
-   GLOBAL CARD — ALINHAMENTO PERFEITO (V3 FINAL)
-   Zero conflito com Bootstrap
-========================================================= */
+   INKAP — GlobalCard.css
+   Card premium (estabelecimentos / profissionais / serviços)
+   ========================================================= */
 
-:root {
-  --bg-top: #0a0f1d;
-  --bg-bottom: #05070f;
-  --border-soft: rgba(255,255,255,0.06);
-  --border-strong: rgba(120,170,255,0.45);
-  --text-main: #f5f7fb;
-  --text-soft: rgba(230,235,245,0.75);
-  --accent: #9fd1ff;
-  --radius-lg: 22px;
-  --radius-md: 16px;
-}
-
-/* ===============================
-   CARD BASE
-================================ */
+/* ===================== CARD BASE ===================== */
 .carousel-card {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 22px 18px;
-  background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
-  border-radius: var(--radius-lg);
+
+  background:
+    linear-gradient(
+      160deg,
+      rgba(180, 108, 255, 0.08),
+      rgba(0, 0, 0, 0.45)
+    ),
+    var(--i-surface);
+
+  border-radius: 22px;
+  padding: 0.75rem;
+  position: relative;
+  cursor: default;
+
   box-shadow:
-    inset 0 0 0 1px var(--border-soft),
-    0 30px 90px rgba(0,0,0,0.85);
-  transition: transform .35s ease, box-shadow .35s ease;
+    inset 0 0 0 1px rgba(180, 108, 255, 0.15),
+    0 25px 60px rgba(0, 0, 0, 0.65);
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .carousel-card:hover {
   transform: translateY(-6px);
   box-shadow:
-    inset 0 0 0 1px var(--border-strong),
-    0 55px 140px rgba(0,0,0,0.95);
+    inset 0 0 0 1px rgba(180, 108, 255, 0.35),
+    0 35px 90px rgba(0, 0, 0, 0.85);
 }
 
-/* ===============================
-   IMAGE
-================================ */
+/* ===================== IMAGE ===================== */
 .carousel-image-wrap {
-  width: 110px;
-  height: 110px;
-  margin: 0 auto 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 18px;
+  background: radial-gradient(
+    120px 120px at 30% 20%,
+    rgba(180, 108, 255, 0.35),
+    rgba(0, 0, 0, 0.85)
+  );
+  box-shadow:
+    inset 0 0 0 1px rgba(180, 108, 255, 0.25);
   cursor: pointer;
 }
 
@@ -55,210 +56,136 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 22px;
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.22),
-    0 18px 45px rgba(0,0,0,0.8);
+  transition: transform 0.35s ease, filter 0.35s ease;
 }
 
-/* ===============================
-   CONTENT — EIXO CENTRAL ÚNICO
-================================ */
+.carousel-image-wrap:hover .carousel-image {
+  transform: scale(1.08);
+  filter: brightness(1.05);
+}
+
+/* ===================== IMAGE SHAPES ===================== */
+.img-round {
+  border-radius: 50%;
+}
+
+.img-establishment {
+  border-radius: 18px;
+}
+
+.img-square {
+  border-radius: 12px;
+}
+
+/* ===================== CONTENT ===================== */
 .carousel-item-content {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;       /* 🔑 */
-  text-align: center;        /* 🔑 */
-  gap: 6px;
+  padding: 0.75rem 0.25rem 0.25rem;
 }
 
-/* ===============================
-   TITLE
-================================ */
+/* ===================== TITLE ===================== */
 .carousel-item-name {
-  font-size: .95rem;
-  font-weight: 600;
-  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--i-text);
   line-height: 1.25;
   cursor: pointer;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  text-shadow: 0 0 12px rgba(180, 108, 255, 0.35);
 }
 
-/* ===============================
-   ESTABLISHMENT
-================================ */
+.carousel-item-name:hover {
+  color: var(--i-primary);
+}
+
+/* ===================== ESTABLISHMENT LINK ===================== */
 .globalcard-establishment {
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  width: 100%;
+  font-size: 0.78rem;
+  color: var(--i-text-muted);
+}
+
+.globalcard-establishment:hover {
+  color: var(--i-primary);
 }
 
 .globalcard-establishment-logo {
   width: 22px;
   height: 22px;
-  border-radius: 50%;
+  border-radius: 6px;
   object-fit: cover;
+  box-shadow: 0 0 0 1px rgba(180, 108, 255, 0.35);
 }
 
-.globalcard-establishment-name {
-  font-size: .78rem;
-  color: var(--text-soft);
-  max-width: 160px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* ===============================
-   LOCATION — CENTRALIZADO DE VERDADE
-================================ */
+/* ===================== LOCATION ===================== */
 .globalcard-location {
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-size: .75rem;
-  color: var(--text-soft);
+  font-size: 0.75rem;
+  color: var(--i-text-soft);
 }
 
-/* ===============================
-   PRICE
-================================ */
+/* ===================== PRICE ===================== */
 .carousel-item-price {
-  font-size: .95rem;
+  margin-top: 0.35rem;
   font-weight: 700;
-  color: var(--accent);
+  font-size: 0.95rem;
+  color: var(--i-accent);
+  text-shadow: 0 0 10px rgba(180, 108, 255, 0.45);
 }
 
-/* ===============================
-   META
-================================ */
-.text-light-50,
-.small {
-  font-size: .75rem;
-  color: rgba(220,225,235,.7) !important;
+/* ===================== METRICS ===================== */
+.carousel-card .badge {
+  background: linear-gradient(
+    145deg,
+    rgba(180, 108, 255, 0.45),
+    rgba(0, 0, 0, 0.75)
+  );
+  border: 1px solid rgba(180, 108, 255, 0.35);
+  font-size: 0.7rem;
 }
 
-/* ===============================
-   BADGE — CENTRAL FIX
-================================ */
-.carousel-item-content .badge {
-  align-self: center;   /* 🔑 */
-  font-size: .65rem;
-  padding: 5px 12px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.15);
-}
-
-/* ===============================
-   BUTTONS
-================================ */
-.carousel-item-content .btn,
-.carousel-item-content .global-button {
-  font-size: .72rem;
+/* ===================== BUTTON AREA ===================== */
+.carousel-card .gbtn {
   border-radius: 999px;
 }
 
-.carousel-item-content .global-button.full {
-  width: 100%;
+.carousel-card .gbtn-primary {
+  background: linear-gradient(
+    145deg,
+    var(--i-primary),
+    var(--i-primary-deep)
+  );
+  box-shadow: 0 0 18px rgba(180, 108, 255, 0.55);
 }
 
-/* ===============================
-   ACTION SLOT
-================================ */
+.carousel-card .gbtn-primary:hover {
+  box-shadow:
+    0 0 25px rgba(180, 108, 255, 0.85),
+    0 0 45px rgba(180, 108, 255, 0.45);
+}
+
+/* ===================== ACTION SLOT ===================== */
 .establishment-actions-slot {
-  width: 100%;
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(255,255,255,0.12);
-  display: flex;
-  justify-content: center;
-  gap: 10px;
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed rgba(180, 108, 255, 0.25);
 }
 
-/* ===============================
-   RESPONSIVO
-================================ */
-@media (max-width: 768px) {
-  .carousel-image-wrap {
-    width: 96px;
-    height: 96px;
-  }
-}
-
-
-/* =================================================
-   GLOBAL CARD — ESTABLISHMENT SUPER RESPONSIVO
-================================================= */
-
-.carousel-card.establishment-horizontal {
-  height: auto;
-  padding: 18px 16px;
-  gap: 12px;
-}
-
-/* conteúdo nunca estica */
-.carousel-card.establishment-horizontal .carousel-item-content {
-  flex: unset;
-  gap: 8px;
-}
-
-/* imagem reduz conforme viewport */
-.carousel-card.establishment-horizontal .carousel-image-wrap {
-  width: clamp(72px, 22vw, 96px);
-  height: clamp(72px, 22vw, 96px);
-  margin-bottom: 8px;
-}
-
-/* título responsivo */
-.carousel-card.establishment-horizontal .carousel-item-name {
-  font-size: clamp(.85rem, 2.5vw, .95rem);
-}
-
-/* localização */
-.carousel-card.establishment-horizontal .globalcard-location {
-  font-size: clamp(.7rem, 2.2vw, .75rem);
-}
-
-/* badges */
-.carousel-card.establishment-horizontal .badge {
-  font-size: clamp(.6rem, 2vw, .65rem);
-  padding: 4px 10px;
-}
-
-/* botões */
-.carousel-card.establishment-horizontal .btn,
-.carousel-card.establishment-horizontal .global-button {
-  font-size: clamp(.65rem, 2.2vw, .72rem);
-}
-
-/* descrição — limita linhas */
-.carousel-card.establishment-horizontal .establishment-actions-slot {
-  margin-top: 10px;
-  padding-top: 10px;
-}
-
-/* texto longo controlado */
-.carousel-card.establishment-horizontal .establishment-actions-slot p,
-.carousel-card.establishment-horizontal .establishment-actions-slot div {
-  display: -webkit-box;
-  -webkit-line-clamp: 6;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* ===============================
-   MOBILE FIRST
-================================ */
+/* ===================== RESPONSIVE ===================== */
 @media (max-width: 576px) {
-  .carousel-card.establishment-horizontal {
-    padding: 14px 12px;
+  .carousel-card {
+    padding: 0.6rem;
   }
 
-  .carousel-card.establishment-horizontal .carousel-image-wrap {
-    width: 64px;
-    height: 64px;
+  .carousel-item-name {
+    font-size: 0.9rem;
+  }
+
+  .carousel-item-price {
+    font-size: 0.9rem;
   }
 }

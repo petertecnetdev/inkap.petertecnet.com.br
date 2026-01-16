@@ -1,315 +1,133 @@
-:root {
-  --user-bg: #0b0b0c;
-  --user-panel: #141416;
-  --user-elev: #1b1b1e;
-  --user-border: rgba(255, 255, 255, 0.08);
-  --user-text: #e5e5e7;
-  --user-muted: #9f9fa5;
-  --user-accent: #0baff5;
-  --user-accent-2: #22d3ee;
-  --user-danger: #ef4444;
-  --user-success: #22c55e;
-  --user-shadow: rgba(0, 0, 0, 0.55);
-  --user-radius: 18px;
-  --user-transition: 0.3s ease-in-out;
-  --user-gradient: linear-gradient(135deg, #0baff5, #22d3ee);
-}
+/* =========================================================
+   USER UPDATE FORM — INKAP STYLE
+========================================================= */
 
-.user-root {
-  background: var(--user-bg);
-  min-height: 100vh;
-  overflow-x: hidden;
-  color: var(--user-text);
-  font-family: "Inter", "Roboto", sans-serif;
-}
-
-.user-update-page {
-  padding: 2rem 1rem 6rem 1rem;
-  max-width: 1200px;
-  margin: auto;
-  animation: fadeIn 0.7s ease-in-out;
-}
-
-.title {
-  text-align: center;
-  color: var(--user-accent);
-  font-size: 1.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 1.2rem;
-}
-
-/* ============================= */
-/* HERO                          */
-/* ============================= */
-
+/* ---------- HERO ---------- */
 .user-hero {
-  border-radius: var(--user-radius);
-  overflow: hidden;
-  background: linear-gradient(90deg, rgba(18,18,18,0.9) 60%, rgba(36,36,36,0.7));
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.45);
-  margin-bottom: 1.5rem;
-  min-height: 230px;
-  backdrop-filter: blur(14px);
+  background: linear-gradient(
+    180deg,
+    rgba(123, 44, 255, 0.25),
+    rgba(11, 7, 19, 0.9)
+  );
+  padding: 3rem 1rem 2.5rem;
+  border-radius: 0 0 2rem 2rem;
+  margin-bottom: 2rem;
 }
 
 .user-hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
-  padding: 2rem;
-  gap: 2rem;
-  flex-wrap: wrap;
+  gap: 1.5rem;
 }
 
-/* AVATAR */
-
 .user-avatar-bubble {
-  width: 150px;
-  height: 150px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
-  background: var(--user-panel);
-  border: 3px solid var(--user-accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  box-shadow: 0 0 20px rgba(11, 175, 245, 0.3);
-  animation: floaty 4s ease-in-out infinite;
+  padding: 4px;
+  background: linear-gradient(135deg, #7b2cff, #c084fc);
 }
 
 .user-avatar {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 50%;
+  background: #0b0713;
 }
 
-/* USER INFO */
-
 .user-info-block {
-  flex: 1;
-  min-width: 250px;
+  color: #f4eaff;
 }
 
 .user-title {
-  font-size: 1.7rem;
-  font-weight: 600;
-  color: var(--user-text);
-  margin-bottom: 0.3rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
 }
 
 .user-description {
-  font-size: 1rem;
-  color: var(--user-muted);
-  margin-bottom: 0.5rem;
+  color: #c5addf;
+  font-size: 0.95rem;
 }
 
-/* ============================= */
-/* BUTTONS                       */
-/* ============================= */
-
-.action-button {
-  background: var(--user-gradient);
-  color: #fff !important;
-  border: none !important;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  border-radius: var(--user-radius);
-  padding: 0.6rem 1.5rem;
-  box-shadow: 0 0 12px rgba(11, 175, 245, 0.3);
-  transition: var(--user-transition);
+/* ---------- FORM CONTAINER ---------- */
+form {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
 }
 
-.action-button:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 0 25px rgba(11, 175, 245, 0.5);
-}
-
-/* ============================= */
-/* FORM                          */
-/* ============================= */
-
+/* ---------- FORM GROUP ---------- */
 .form-group {
   display: flex;
   flex-direction: column;
-  background: var(--user-elev);
-  border: 1px solid var(--user-border);
-  padding: 1rem;
-  border-radius: var(--user-radius);
-  box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.03);
-  transition: var(--user-transition);
-}
-
-.form-group:hover {
-  border-color: var(--user-accent);
-  box-shadow: 0 0 12px rgba(11, 175, 245, 0.15);
+  gap: 0.35rem;
 }
 
 .form-group label {
-  font-size: 0.9rem;
-  color: var(--user-muted);
-  margin-bottom: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #c084fc;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
+/* ---------- INPUTS ---------- */
 .form-group input,
 .form-group select,
 .form-group textarea {
-  background: var(--user-panel);
-  border: 1px solid var(--user-border);
-  color: var(--user-text);
-  font-size: 0.95rem;
-  border-radius: 10px;
-  padding: 0.6rem 0.8rem;
-  transition: var(--user-transition);
+  background: #110b1d;
+  border: 1px solid rgba(192, 132, 252, 0.25);
+  border-radius: 0.6rem;
+  padding: 0.65rem 0.75rem;
+  color: #f4eaff;
+  font-size: 0.9rem;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #9b7fc2;
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  border-color: var(--user-accent);
-  box-shadow: 0 0 15px rgba(11, 175, 245, 0.3);
   outline: none;
+  border-color: #9f4dff;
+  box-shadow: 0 0 0 2px rgba(159, 77, 255, 0.25);
 }
 
-textarea {
-  resize: vertical;
-  min-height: 90px;
-}
-
-/* ============================= */
-/* SUBMIT BUTTON                 */
-/* ============================= */
-
-.submit-btn {
-  background: var(--user-gradient);
-  color: #fff;
-  font-weight: 600;
-  border: none;
-  border-radius: var(--user-radius);
-  padding: 0.8rem 2rem;
-  margin-top: 1rem;
-  box-shadow: 0 0 18px rgba(11, 175, 245, 0.25);
-  transition: var(--user-transition);
-}
-
-.submit-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 30px rgba(11, 175, 245, 0.45);
-}
-
-.submit-btn:disabled {
-  opacity: 0.5;
+/* ---------- DISABLED ---------- */
+.form-group input:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
-/* ============================= */
-/* SCROLLBAR                     */
-/* ============================= */
-
-::-webkit-scrollbar {
-  width: 8px;
+/* ---------- TEXTAREA ---------- */
+.form-group textarea {
+  resize: none;
+  min-height: 90px;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--user-bg);
+/* ---------- BUTTON AREA ---------- */
+.text-end {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: flex-end;
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--user-accent);
-  border-radius: 5px;
-}
-
-/* ============================= */
-/* ANIMATIONS                    */
-/* ============================= */
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes floaty {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-/* ============================= */
-/* RESPONSIVE                    */
-/* ============================= */
-
-@media (max-width: 992px) {
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
   .user-hero-inner {
     flex-direction: column;
     text-align: center;
   }
 
-  .user-avatar-bubble {
-    margin-bottom: 1rem;
-  }
-
-  .user-title {
-    font-size: 1.5rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .title {
-    font-size: 1.5rem;
-  }
-
-  .user-update-page {
-    padding: 1.5rem;
-  }
-
-  .form-group {
-    padding: 0.8rem;
-  }
-
-  .submit-btn {
-    width: 100%;
-    font-size: 1rem;
-  }
-
-  .action-button {
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .user-hero-inner {
-    padding: 1rem;
-  }
-
-  .user-avatar-bubble {
-    width: 120px;
-    height: 120px;
-  }
-
-  .user-title {
-    font-size: 1.2rem;
-  }
-
-  .form-group label {
-    font-size: 0.85rem;
-  }
-
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    font-size: 0.85rem;
-  }
-
-  .submit-btn {
-    padding: 0.7rem;
+  .text-end {
+    justify-content: center;
   }
 }

@@ -1,6 +1,5 @@
-// src/contexts/LoadingContext.jsx
 import React, { createContext, useState, useCallback, useEffect } from "react";
-import axios from "axios";
+import api from "../services/api";
 
 export const LoadingContext = createContext({
   isLoading: false,
@@ -19,7 +18,7 @@ export function LoadingProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    const reqId = axios.interceptors.request.use(
+    const reqId = api.interceptors.request.use(
       (config) => {
         push();
         return config;
@@ -30,7 +29,7 @@ export function LoadingProvider({ children }) {
       }
     );
 
-    const resId = axios.interceptors.response.use(
+    const resId = api.interceptors.response.use(
       (response) => {
         pop();
         return response;
@@ -42,8 +41,8 @@ export function LoadingProvider({ children }) {
     );
 
     return () => {
-      axios.interceptors.request.eject(reqId);
-      axios.interceptors.response.eject(resId);
+      api.interceptors.request.eject(reqId);
+      api.interceptors.response.eject(resId);
     };
   }, [push, pop]);
 

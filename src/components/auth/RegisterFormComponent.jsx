@@ -1,14 +1,12 @@
-// src/components/auth/RegisterFormComponent.jsx
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import PropTypes from "prop-types";
 import Swal from "sweetalert2";
 import api from "../../services/api";
-import ProcessingIndicatorComponent from "../ProcessingIndicatorComponent";
 import "./RegisterFormComponent.css";
 
 export default function RegisterFormComponent({ redirectTo }) {
-  const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
@@ -31,7 +29,7 @@ export default function RegisterFormComponent({ redirectTo }) {
 
     try {
       await api.post("/auth/register", {
-        username,
+        first_name: firstName,
         email,
         password,
         password_confirmation: passwordConfirmation,
@@ -47,13 +45,16 @@ export default function RegisterFormComponent({ redirectTo }) {
       });
     } catch (err) {
       let msg = "Ocorreu um erro.";
+
       if (err.response) {
-        msg =
-          err.response.data.error ||
-          err.response.data.message ||
-          (err.response.data.errors
-            ? Object.values(err.response.data.errors).flat().join(" ")
-            : msg);
+        // Mostra todas as mensagens de validação da API
+        if (err.response.data.errors) {
+          msg = Object.values(err.response.data.errors)
+            .flat()
+            .join(" ");
+        } else if (err.response.data.message) {
+          msg = err.response.data.message;
+        }
       }
 
       Swal.fire({
@@ -69,20 +70,15 @@ export default function RegisterFormComponent({ redirectTo }) {
 
   return (
     <>
-      {loading && (
-        <ProcessingIndicatorComponent
-          messages={["Registrando...", "Aguarde..."]}
-        />
-      )}
-
+     
       {!loading && (
         <Form onSubmit={handleSubmit} className="login-form-component mt-4">
           <Form.Control
             type="text"
-            placeholder="Usuário"
+            placeholder="Nome"
             className="neon-input mb-3"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
             required
           />
 

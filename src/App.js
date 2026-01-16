@@ -73,39 +73,58 @@ function AppInner() {
   const [establishments, setEstablishments] = useState([]);
   const [initialLoading, setInitialLoading] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      const token = localStorage.getItem("token");
+ useEffect(() => {
+  let cancelled = false;
 
-      if (!token) {
-        setInitialLoading(false);
-        return;
-      }
+  const loadAuth = async () => {
+    const token = localStorage.getItem("token");
 
-      try {
-        const { data } = await axios.get(`${apiBaseUrl}/auth/me`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+    if (!token) {
+      setUser(null);
+      setEmployer(null);
+      setIsEmployer(false);
+      setEstablishments([]);
+      setInitialLoading(false);
+      return;
+    }
 
-        setUser(data.user ?? null);
-        setEmployer(data.employer ?? null);
-        setIsEmployer(!!data.is_employer);
-        setEstablishments(data.establishments ?? []);
-      } catch {
-        localStorage.removeItem("token");
-        setUser(null);
-        setEmployer(null);
-        setIsEmployer(false);
-        setEstablishments([]);
-      } finally {
-        setInitialLoading(false);
-      }
-    })();
-  }, []);
+    try {
+      const { data } = await axios.get(`${apiBaseUrl}/auth/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (cancelled) return;
+
+      setUser(data.user ?? null);
+      setEmployer(data.employer ?? null);
+      setIsEmployer(!!data.is_employer);
+      setEstablishments(data.establishments ?? []);
+    } catch {
+      localStorage.removeItem("token");
+      setUser(null);
+      setEmployer(null);
+      setIsEmployer(false);
+      setEstablishments([]);
+    } finally {
+      if (!cancelled) setInitialLoading(false);
+    }
+  };
+
+  loadAuth();
+
+  const onAuthChanged = () => loadAuth();
+  window.addEventListener("authChanged", onAuthChanged);
+
+  return () => {
+    cancelled = true;
+    window.removeEventListener("authChanged", onAuthChanged);
+  };
+}, []);
+
 
   if (initialLoading) {
     return (
-      <ProcessingIndicatorComponent interval={100} gifSrc="/images/logo.gif" />
+      <ProcessingIndicatorComponent interval={1000} gifSrc="/images/logo.gif" />
     );
   }
 
@@ -146,7 +165,7 @@ function AppInner() {
       <>
         {isLoading && (
           <ProcessingIndicatorComponent
-            interval={800}
+            interval={1000}
             gifSrc="/images/logo.gif"
           />
         )}

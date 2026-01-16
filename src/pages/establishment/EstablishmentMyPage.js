@@ -1,6 +1,6 @@
 // src/pages/establishment/EstablishmentMyPage.jsx
 import React from "react";
-import { Container, Row, Col, Spinner, Alert } from "react-bootstrap";
+import { Container, Row, Col, Spinner, Alert, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import GlobalNav from "../../components/GlobalNav";
 import EstablishmentHero from "../../components/establishment/EstablishmentHero";
@@ -38,20 +38,33 @@ export default function EstablishmentMyPage() {
   return (
     <>
       <GlobalNav />
-{heroEstablishment && (
-  <EstablishmentHero
-    title={heroEstablishment.fantasy || heroEstablishment.name}
-    subtitle="Gestão central dos seus negócios"
-    description="Acompanhe métricas, acesse rapidamente cada estabelecimento e gerencie serviços, itens, colaboradores e pedidos em um só lugar."
-    city={heroEstablishment.city}
-    uf={heroEstablishment.uf}
-    logo={heroEstablishment?.images?.logo}
-    background={heroEstablishment?.images?.background}
-    showBack
-  />
-)}
+
+      {heroEstablishment && (
+        <EstablishmentHero
+          title={heroEstablishment.fantasy || heroEstablishment.name}
+          subtitle="Gestão central dos seus negócios"
+          description="Acompanhe métricas, acesse rapidamente cada estabelecimento e gerencie serviços, itens, colaboradores e pedidos em um só lugar."
+          city={heroEstablishment.city}
+          uf={heroEstablishment.uf}
+          logo={heroEstablishment?.images?.logo}
+          background={heroEstablishment?.images?.background}
+          showBack
+        />
+      )}
 
       <Container fluid className="establishment-my-wrapper mt-4">
+        {/* ✅ Botão de criar novo estabelecimento */}
+        <Row className="mb-3">
+          <Col xs={12} className="d-flex justify-content-end">
+            <Button
+              variant="primary"
+              onClick={() => navigate("/establishment/create")}
+            >
+              + Novo Estabelecimento
+            </Button>
+          </Col>
+        </Row>
+
         {establishments.length === 0 && (
           <Row>
             <Col xs={12} className="text-center text-muted">

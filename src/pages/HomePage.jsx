@@ -10,10 +10,10 @@ import useSchedulePopup from "../hooks/useSchedulePopup";
 
 import "./HomePage.css";
 
-import GlobalCarousel from "../components/GlobalCarousel";
 import GlobalNav from "../components/GlobalNav";
+import GlobalFooter from "../components/GlobalFooter";
+import GlobalCarousel from "../components/GlobalCarousel";
 import CitySelectorModal from "../components/CitySelectorModal";
-import HomeHeader from "../components/home/HomeHeader";
 import AppointmentWizardModal from "../components/appointment/AppointmentWizardModal";
 
 const PLACEHOLDER = "/images/logo.png";
@@ -67,14 +67,16 @@ export default function HomePage() {
     setShowCityModal(false);
   };
 
+  /* =================== STATES =================== */
   if (isLoading) {
     return (
       <>
         <GlobalNav />
-        <div className="hp-wrapper">
-          <HomeHeader city={currentCity} uf={currentUF} />
+        <div className="hp-wrapper hp-centered">
+        
           <div className="hp-loading">Carregando…</div>
         </div>
+        <GlobalFooter />
       </>
     );
   }
@@ -83,31 +85,29 @@ export default function HomePage() {
     return (
       <>
         <GlobalNav />
-        <div className="hp-wrapper">
+        <div className="hp-wrapper hp-centered">
           <div className="hp-loading">{error}</div>
         </div>
+        <GlobalFooter />
       </>
     );
   }
 
+  /* =================== RENDER =================== */
   return (
     <>
       <GlobalNav />
 
-      <div className="hp-wrapper">
-        <HomeHeader
-          city={currentCity}
-          uf={currentUF}
-          onChangeCity={() => setShowCityModal(true)}
-        />
-
+      <main className="hp-wrapper">
+       
         <GlobalCarousel
           title="Estabelecimentos"
           items={establishments}
-          navigate={(path) => (window.location.href = path)}
+          navigate={(path) => navigate(path)}
           openSchedulePopup={async (item) => {
             const filteredEmployers = employers.filter(
-              (emp) => Number(emp.establishment_id) === Number(item.id)
+              (emp) =>
+                Number(emp.establishment_id) === Number(item.id)
             );
 
             await openSchedulePopup({
@@ -131,13 +131,17 @@ export default function HomePage() {
         <GlobalCarousel
           title="Serviços"
           items={serviceItems}
-          navigate={(path) => (window.location.href = path)}
+          navigate={(path) => navigate(path)}
           openSchedulePopup={(item) => {
             const entityId =
-              item.establishment_id || item.entity_id || item.entityId;
+              item.establishment_id ||
+              item.entity_id ||
+              item.entityId;
 
             const filteredEmployers = employers.filter(
-              (emp) => Number(emp.establishment_id) === Number(entityId)
+              (emp) =>
+                Number(emp.establishment_id) ===
+                Number(entityId)
             );
 
             openSchedulePopup({
@@ -151,10 +155,10 @@ export default function HomePage() {
         <GlobalCarousel
           title="Produtos"
           items={productItems}
-          navigate={(path) => (window.location.href = path)}
+          navigate={(path) => navigate(path)}
           showSchedule={false}
         />
-      </div>
+      </main>
 
       <AppointmentWizardModal
         show={showWizard}
@@ -175,6 +179,9 @@ export default function HomePage() {
         onClose={() => setShowCityModal(false)}
         onSelectCity={handleSelectCity}
       />
+
+      {/* FOOTER FIXO MOBILE */}
+      <GlobalFooter />
     </>
   );
 }

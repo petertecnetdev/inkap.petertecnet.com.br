@@ -1,17 +1,17 @@
-import { useState } from "react";
+// src/hooks/useLogin.js
 import Swal from "sweetalert2";
 import api from "../services/api";
 
-export default function useLogin(onSuccess, redirectTo) {
-  const [loading, setLoading] = useState(false);
 
+export default function useLogin(onSuccess, redirectTo = "/") {
   const setToken = (token) => localStorage.setItem("token", token);
 
   const extractToken = (p) =>
-    p.token?.access_token ??
-    p.token?.original?.access_token ??
-    p.access_token ??
-    p.token;
+    p?.token?.access_token ??
+    p?.token?.original?.access_token ??
+    p?.access_token ??
+    p?.token ??
+    null;
 
   const showError = (msg) =>
     Swal.fire({
@@ -43,9 +43,15 @@ export default function useLogin(onSuccess, redirectTo) {
       );
     });
 
-  const login = async (username, password) => {
-    setLoading(true);
+  const finalizeLogin = (token) => {
+    setToken(token);
+    window.dispatchEvent(new Event("authChanged"));
 
+    if (onSuccess) onSuccess(token);
+    else window.location.href = redirectTo;
+  };
+
+  const login = async (username, password) => {
     try {
       const location = await getLocation();
 
@@ -58,25 +64,17 @@ export default function useLogin(onSuccess, redirectTo) {
       const token = extractToken(data);
       if (!token) throw new Error("Token não recebido");
 
-      setToken(token);
-      window.dispatchEvent(new Event("authChanged"));
-
-      if (onSuccess) onSuccess(token);
-      else window.location.href = redirectTo;
+      finalizeLogin(token);
     } catch (err) {
       const msg =
-        err.response?.data?.error ||
-        err.response?.data?.message ||
+        err?.response?.data?.error ||
+        err?.response?.data?.message ||
         "Falha no login.";
       showError(msg);
-    } finally {
-      setLoading(false);
     }
   };
 
   const loginGoogle = async (credential) => {
-    setLoading(true);
-
     try {
       const location = await getLocation();
 
@@ -88,24 +86,17 @@ export default function useLogin(onSuccess, redirectTo) {
       const token = extractToken(data);
       if (!token) throw new Error("Token Google não recebido");
 
-      setToken(token);
-      window.dispatchEvent(new Event("authChanged"));
-
-      if (onSuccess) onSuccess(token);
-      else window.location.href = redirectTo;
+      finalizeLogin(token);
     } catch (err) {
       const msg =
-        err.response?.data?.error ||
-        err.response?.data?.message ||
+        err?.response?.data?.error ||
+        err?.response?.data?.message ||
         "Falha no login com Google.";
       showError(msg);
-    } finally {
-      setLoading(false);
     }
   };
 
   return {
-    loading,
     login,
     loginGoogle,
   };

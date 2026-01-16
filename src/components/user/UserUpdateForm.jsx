@@ -1,5 +1,7 @@
+// src/components/user/UserUpdateForm.jsx
 import React from "react";
-import { Row, Col, Form, Button } from "react-bootstrap";
+import { Row, Col, Form } from "react-bootstrap";
+import GlobalButton from "../GlobalButton";
 import "./UserUpdateForm.css";
 
 export default function UserUpdateForm({
@@ -19,11 +21,11 @@ export default function UserUpdateForm({
       <div className="user-hero">
         <div className="user-hero-inner">
           <div className="user-avatar-bubble">
-            {avatarPreview ? (
-              <img src={avatarPreview} className="user-avatar" alt="Avatar" />
-            ) : (
-              <img src="/images/user.png" className="user-avatar" alt="Avatar padrão" />
-            )}
+            <img
+              src={avatarPreview || "/images/user.png"}
+              className="user-avatar"
+              alt="Avatar"
+            />
           </div>
 
           <div className="user-info-block">
@@ -35,13 +37,13 @@ export default function UserUpdateForm({
 
       {/* BOTÃO ALTERAR FOTO */}
       <div className="d-flex justify-content-center my-3">
-        <Button
-          variant="secondary"
-          className="action-button"
+        <GlobalButton
+          variant="outline"
+          rounded
           onClick={() => document.getElementById("avatarInput").click()}
         >
           Alterar Foto de Perfil
-        </Button>
+        </GlobalButton>
       </div>
 
       <Form.Control
@@ -55,7 +57,6 @@ export default function UserUpdateForm({
       {/* FORMULÁRIO */}
       <Form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
         <Row className="gy-3 mt-2">
-
           <Col xs={12} md={6} lg={4}>
             <div className="form-group">
               <label>Primeiro Nome</label>
@@ -166,9 +167,15 @@ export default function UserUpdateForm({
           </Col>
 
           <Col xs={12} className="text-end">
-            <button disabled={isSubmitting} className="submit-btn">
+            <GlobalButton
+              type="submit"
+              variant="primary"
+              loading={isSubmitting}
+              disabled={isSubmitting}
+              rounded
+            >
               {isSubmitting ? "Salvando..." : "Salvar Alterações"}
-            </button>
+            </GlobalButton>
           </Col>
         </Row>
       </Form>

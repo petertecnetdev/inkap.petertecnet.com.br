@@ -1,120 +1,313 @@
 // src/components/GlobalNav.jsx
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
-import { apiBaseUrl } from "../config";
-import GlobalNavHeader from "./globalnav/GlobalNavHeader";
-import GlobalNavMenu from "./globalnav/GlobalNavMenu";
+import React, {
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import PropTypes from "prop-types";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
+import { AuthContext } from "../App";
+import useImageUtils from "../hooks/useImageUtils";
+import CitySelectorModal from "./CitySelectorModal";
+import ProcessingIndicatorComponent from "./ProcessingIndicatorComponent";
+
 import "./GlobalNav.css";
 
-export default function GlobalNav() {
+export default function GlobalNav({ loadingMenu, handleLogout }) {
+  const { user } = useContext(AuthContext);
+
   const location = useLocation();
-  const [user, setUser] = useState(() => {
-    const cached = localStorage.getItem("user");
-    return cached ? JSON.parse(cached) : null;
+  const navigate = useNavigate();
+
+  /* =================== PROCESSING (LOGOUT) =================== */
+  const [processing, setProcessing] = useState(false);
+
+  /* =================== AUTH =================== */
+  const isAuthed = !!user;
+
+  const fullName = useMemo(() => {
+    if (!user) return "Minha conta";
+    const fn = (user.first_name || "").trim();
+    const ln = (user.last_name || "").trim();
+    return (
+      `${fn} ${ln}`.trim() ||
+      user.name ||
+      user.username ||
+      user.email ||
+      "Minha conta"
+    );
+  }, [user]);
+
+  const { imageUrl, handleImgError, placeholderSvg } = useImageUtils({
+    fallbackText: fullName,
+    fallbackShape: "round",
   });
 
-  const [loading, setLoading] = useState(true);
-  const [loadingMenu, setLoadingMenu] = useState(true);
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [showAdminSubmenu, setShowAdminSubmenu] = useState(false);
-  const [showEstSubmenu, setShowEstSubmenu] = useState(false);
-  const [showBarberSubmenu, setShowBarberSubmenu] = useState(false);
+  const avatarSrc = useMemo(() => {
+    const raw =
+      user?.images?.avatar ||
+      user?.images?.profile ||
+      user?.avatar ||
+      null;
+
+    return imageUrl(raw) || placeholderSvg || "/images/user.png";
+  }, [user, imageUrl, placeholderSvg]);
+
+  /* =================== UI =================== */
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+  const userMenuRef = useRef(null);
+  const mobileRef = useRef(null);
+
+  const closeAll = () => {
+    setMobileOpen(false);
+    setUserMenuOpen(false);
+  };
+
+  /* =================== CITY =================== */
+  const [showCityModal, setShowCityModal] = useState(false);
+  const [currentCity, setCurrentCity] = useState(
+    localStorage.getItem("selectedCity")
+  );
+  const [currentUF, setCurrentUF] = useState(
+    localStorage.getItem("selectedUF")
+  );
+
+  const handleSelectCity = ({ city, uf }) => {
+    localStorage.setItem("selectedCity", city);
+    localStorage.setItem("selectedUF", uf);
+    setCurrentCity(city);
+    setCurrentUF(uf);
+    setShowCityModal(false);
+  };
+
+  const locationText =
+    currentCity && currentUF
+      ? `${currentCity} / ${currentUF}`
+      : "Localização não definida";
+
+  /* =================== LOGOUT =================== */
+ const onLogout = async () => {
+  setProcessing(true);
+
+  try {
+    if (handleLogout) {
+      await handleLogout();
+    }
+  } catch {
+    // ignora erro
+  } finally {
+    localStorage.clear();
+    closeAll();
+    window.dispatchEvent(new Event("authChanged"));
+
+    // 🔥 HARD REDIRECT — desmonta tudo
+    window.location.replace("/login");
+  }
+};
+
+  /* =================== EFFECTS =================== */
+  useEffect(() => closeAll(), [location.pathname]);
 
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 992) setShowMobileMenu(false);
+    const onDocMouseDown = (e) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setUserMenuOpen(false);
+      }
+      if (mobileRef.current && !mobileRef.current.contains(e.target)) {
+        setMobileOpen(false);
+      }
     };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    document.addEventListener("mousedown", onDocMouseDown);
+    return () =>
+      document.removeEventListener("mousedown", onDocMouseDown);
   }, []);
 
-  useEffect(() => {
-    let cancelled = false;
+  const navIsLoading = !!loadingMenu;
 
-    const loadUser = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        if (!cancelled) {
-          setUser(null);
-          setLoading(false);
-          setLoadingMenu(false);
-        }
-        return;
-      }
-
-      try {
-        const headers = { Authorization: `Bearer ${token}` };
-        const { data } = await axios.get(`${apiBaseUrl}/auth/me`, { headers });
-
-        if (!cancelled) {
-          const userData = {
-            ...data.user,
-            isEmployer: data.is_employer,
-            employer: data.employer,
-            establishments: data.establishments || [],
-            profile: data.profile || {},
-            is_barber: data.user?.is_barber ?? false,
-          };
-
-          setUser(userData);
-          localStorage.setItem("user", JSON.stringify(userData));
-        }
-      } catch {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        if (!cancelled) setUser(null);
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-          setLoadingMenu(false);
-        }
-      }
-    };
-
-    loadUser();
-    const handleAuthChanged = () => loadUser();
-    window.addEventListener("authChanged", handleAuthChanged);
-    return () => {
-      cancelled = true;
-      window.removeEventListener("authChanged", handleAuthChanged);
-    };
-  }, [location.pathname]);
-
-  const handleToggleMobileMenu = () => {
-    setShowMobileMenu((prev) => !prev);
-    setShowAdminSubmenu(false);
-    setShowEstSubmenu(false);
-    setShowBarberSubmenu(false);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    window.dispatchEvent(new Event("authChanged"));
-    window.location.replace("/");
-  };
-
-  return (
-    <div className="globalnav__fixed">
-      <GlobalNavHeader
-        user={user}
-        loadingMenu={loadingMenu}
-        handleToggleMobileMenu={handleToggleMobileMenu}
+  /* =================== BLOCK UI DURING LOGOUT =================== */
+  if (processing) {
+    return (
+      <ProcessingIndicatorComponent
+        gifSrc="/images/logo.gif"
+        minDuration={0} // 🚫 sem delay em logout
       />
+    );
+  }
 
-      {showMobileMenu && (
-        <GlobalNavMenu
-          user={user || {}}
-          loading={loading}
-          showAdminSubmenu={showAdminSubmenu}
-          setShowAdminSubmenu={setShowAdminSubmenu}
-          showEstSubmenu={showEstSubmenu}
-          setShowEstSubmenu={setShowEstSubmenu}
-          handleToggleMobileMenu={handleToggleMobileMenu}
-          handleLogout={handleLogout}
-        />
-      )}
-    </div>
+  /* =================== RENDER =================== */
+  return (
+    <>
+      <header className="inkapnav">
+        <div className="inkapnav__bar">
+          {/* LEFT */}
+          <div className="inkapnav__left">
+            <Link to="/" className="inkapnav__brand">
+              <img
+                src="/images/logo.png"
+                alt="Logo Inkap"
+                className="inkapnav__logo"
+              />
+            </Link>
+
+            {/* LINKS PÚBLICOS */}
+            <nav className="inkapnav__links">
+              <Link to="/establishments" className="inkapnav__link">
+                Estabelecimentos
+              </Link>
+              <Link to="/employers" className="inkapnav__link">
+                Profissionais
+              </Link>
+              <Link to="/item/services" className="inkapnav__link">
+                Serviços
+              </Link>
+              <Link to="/item/products" className="inkapnav__link">
+                Produtos
+              </Link>
+            </nav>
+
+            <div className="inkapnav__locationWrap">
+              <div className="inkapnav__location">
+                <span className="inkapnav__locationDot" />
+                <span className="inkapnav__locationText">
+                  {locationText}
+                </span>
+              </div>
+
+              <button
+                className="inkapnav__changeCityBtn"
+                onClick={() => setShowCityModal(true)}
+              >
+                Trocar cidade
+              </button>
+            </div>
+          </div>
+
+          {/* RIGHT */}
+          <div className="inkapnav__right">
+            {!navIsLoading && !isAuthed && (
+              <div className="inkapnav__authActions">
+                <Link
+                  to="/login"
+                  className="inkapnav__btn inkapnav__btn--ghost"
+                >
+                  Entrar
+                </Link>
+                <Link
+                  to="/register"
+                  className="inkapnav__btn inkapnav__btn--primary"
+                >
+                  Criar conta
+                </Link>
+              </div>
+            )}
+
+            {!navIsLoading && isAuthed && (
+              <div className="inkapnav__user" ref={userMenuRef}>
+                <button
+                  className="inkapnav__userBtn"
+                  onClick={() =>
+                    setUserMenuOpen((v) => !v)
+                  }
+                >
+                  <img
+                    src={avatarSrc}
+                    alt={fullName}
+                    className="inkapnav__avatar"
+                    onError={handleImgError}
+                  />
+                  <span className="inkapnav__userName">
+                    {fullName}
+                  </span>
+                </button>
+
+                {userMenuOpen && (
+                  <div className="inkapnav__userMenu">
+                    <Link
+                      to="/user/update"
+                      className="inkapnav__userMenuItem"
+                      onClick={closeAll}
+                    >
+                      Meus dados
+                    </Link>
+
+                    <div className="inkapnav__divider" />
+
+                    <Link
+                      to="/order/my"
+                      className="inkapnav__userMenuItem"
+                      onClick={closeAll}
+                    >
+                      Meus agendamentos
+                    </Link>
+
+                    <div className="inkapnav__divider" />
+
+                    <Link
+                      to="/establishment/my"
+                      className="inkapnav__userMenuItem"
+                      onClick={closeAll}
+                    >
+                      Meus estabelecimentos
+                    </Link>
+
+                    <Link
+                      to="/establishment/create"
+                      className="inkapnav__userMenuItem"
+                      onClick={closeAll}
+                    >
+                      Criar estabelecimento
+                    </Link>
+
+                    <div className="inkapnav__divider" />
+
+                    <Link
+                      to="/employer/dashboard"
+                      className="inkapnav__userMenuItem"
+                      onClick={closeAll}
+                    >
+                      Área do colaborador
+                    </Link>
+
+                    <div className="inkapnav__divider" />
+
+                    <Link
+                      to="/dashboard"
+                      className="inkapnav__userMenuItem"
+                      onClick={closeAll}
+                    >
+                      Dashboard
+                    </Link>
+
+                    <button
+                      className="inkapnav__userMenuItem inkapnav__logout"
+                      onClick={onLogout}
+                    >
+                      Sair
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </header>
+
+      <CitySelectorModal
+        user={user || {}}
+        show={showCityModal}
+        onClose={() => setShowCityModal(false)}
+        onSelectCity={handleSelectCity}
+      />
+    </>
   );
 }
+
+GlobalNav.propTypes = {
+  loadingMenu: PropTypes.bool,
+  handleLogout: PropTypes.func,
+};
