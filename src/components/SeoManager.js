@@ -2,18 +2,18 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 const SITE_URL = "https://inkap.petertecnet.com.br";
-const DEFAULT_TITLE = "Inkap | Serviços, produtos e estabelecimentos";
-const DEFAULT_DESCRIPTION = "Descubra estabelecimentos, profissionais, serviços e produtos publicados na Inkap, uma plataforma Peter Tecnet.";
+const DEFAULT_TITLE = "Inkap | Tatuadores, Estúdios e Serviços";
+const DEFAULT_DESCRIPTION = "Encontre estúdios, tatuadores, serviços e portfólios na Inkap, a plataforma da Peter Tecnet para o mercado de tatuagem.";
 
 const resolvePublicRoute = (path) => {
   if (path === "/") return { title: DEFAULT_TITLE, description: DEFAULT_DESCRIPTION };
-  if (path === "/establishments") return { title: "Estabelecimentos | Inkap", description: "Encontre estabelecimentos publicados na Inkap." };
-  if (path.startsWith("/establishment/view/")) return { title: "Estabelecimento | Inkap", description: "Veja informações, serviços e produtos deste estabelecimento na Inkap." };
-  if (path === "/employers") return { title: "Profissionais | Inkap", description: "Conheça profissionais publicados na Inkap." };
-  if (path.startsWith("/employer/view/")) return { title: "Profissional | Inkap", description: "Veja informações deste profissional na Inkap." };
-  if (path === "/item/services") return { title: "Serviços | Inkap", description: "Explore serviços disponíveis na Inkap." };
-  if (path === "/item/products") return { title: "Produtos | Inkap", description: "Explore produtos disponíveis na Inkap." };
-  if (path.startsWith("/item/view/")) return { title: "Item | Inkap", description: "Veja detalhes deste item publicado na Inkap." };
+  if (path === "/establishments") return { title: "Estúdios de tatuagem | Inkap", description: "Encontre estúdios de tatuagem publicados na Inkap." };
+  if (path.startsWith("/establishment/view/")) return { title: "Estúdio de tatuagem | Inkap", description: "Veja informações, artistas e serviços deste estúdio na Inkap." };
+  if (path === "/employers") return { title: "Tatuadores e artistas | Inkap", description: "Conheça tatuadores e artistas publicados na Inkap." };
+  if (path.startsWith("/employer/view/")) return { title: "Tatuador | Inkap", description: "Veja informações e trabalhos deste profissional na Inkap." };
+  if (path === "/item/services") return { title: "Serviços de tatuagem | Inkap", description: "Explore serviços de tatuagem publicados na Inkap." };
+  if (path === "/item/products") return { title: "Produtos | Inkap", description: "Explore produtos publicados por estúdios e profissionais na Inkap." };
+  if (path.startsWith("/item/view/")) return { title: "Serviço ou produto | Inkap", description: "Veja detalhes deste item publicado na Inkap." };
   return null;
 };
 
