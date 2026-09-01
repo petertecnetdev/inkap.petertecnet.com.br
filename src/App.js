@@ -10,6 +10,7 @@ import axios from "axios";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
 import ProcessingIndicatorComponent from "./components/ProcessingIndicatorComponent";
+import SeoManager from "./components/SeoManager";
 import { LoadingProvider, LoadingContext } from "./contexts/LoadingContext";
 import { apiBaseUrl } from "./config";
 
@@ -73,54 +74,53 @@ function AppInner() {
   const [establishments, setEstablishments] = useState([]);
   const [initialLoading, setInitialLoading] = useState(true);
 
- useEffect(() => {
-  let cancelled = false;
+  useEffect(() => {
+    let cancelled = false;
 
-  const loadAuth = async () => {
-    const token = localStorage.getItem("token");
+    const loadAuth = async () => {
+      const token = localStorage.getItem("token");
 
-    if (!token) {
-      setUser(null);
-      setEmployer(null);
-      setIsEmployer(false);
-      setEstablishments([]);
-      setInitialLoading(false);
-      return;
-    }
+      if (!token) {
+        setUser(null);
+        setEmployer(null);
+        setIsEmployer(false);
+        setEstablishments([]);
+        setInitialLoading(false);
+        return;
+      }
 
-    try {
-      const { data } = await axios.get(`${apiBaseUrl}/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      try {
+        const { data } = await axios.get(`${apiBaseUrl}/auth/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-      if (cancelled) return;
+        if (cancelled) return;
 
-      setUser(data.user ?? null);
-      setEmployer(data.employer ?? null);
-      setIsEmployer(!!data.is_employer);
-      setEstablishments(data.establishments ?? []);
-    } catch {
-      localStorage.removeItem("token");
-      setUser(null);
-      setEmployer(null);
-      setIsEmployer(false);
-      setEstablishments([]);
-    } finally {
-      if (!cancelled) setInitialLoading(false);
-    }
-  };
+        setUser(data.user ?? null);
+        setEmployer(data.employer ?? null);
+        setIsEmployer(!!data.is_employer);
+        setEstablishments(data.establishments ?? []);
+      } catch {
+        localStorage.removeItem("token");
+        setUser(null);
+        setEmployer(null);
+        setIsEmployer(false);
+        setEstablishments([]);
+      } finally {
+        if (!cancelled) setInitialLoading(false);
+      }
+    };
 
-  loadAuth();
+    loadAuth();
 
-  const onAuthChanged = () => loadAuth();
-  window.addEventListener("authChanged", onAuthChanged);
+    const onAuthChanged = () => loadAuth();
+    window.addEventListener("authChanged", onAuthChanged);
 
-  return () => {
-    cancelled = true;
-    window.removeEventListener("authChanged", onAuthChanged);
-  };
-}, []);
-
+    return () => {
+      cancelled = true;
+      window.removeEventListener("authChanged", onAuthChanged);
+    };
+  }, []);
 
   if (initialLoading) {
     return (
@@ -171,6 +171,7 @@ function AppInner() {
         )}
 
         <Router>
+          <SeoManager />
           <Routes>
             <Route path="/" element={<HomePage />} />
 
