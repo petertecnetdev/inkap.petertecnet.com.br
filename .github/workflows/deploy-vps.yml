@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   deploy:
-    # Central deploy: SSH retries, serialized VPS builds and superseded-run cancellation.
+    # Zero-downtime central deploy: build off-path, publish assets first, switch index last.
     uses: petertecnetdev/petertecnet.com.br/.github/workflows/reusable-vps-deploy.yml@main
     with:
       deploy_path: /var/www/inkap.petertecnet.com.br
