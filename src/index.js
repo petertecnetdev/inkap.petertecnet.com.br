@@ -1,5 +1,6 @@
 import { startTelemetry } from "./telemetry";
 import { apiBaseUrl, appId, appSlug } from "./config";
+import { installGlobalImageFallbacks } from "./utils/imageFallback";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import axios from "axios";
@@ -8,6 +9,7 @@ import PeterAccountGateway from "./components/PeterAccountGateway";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+installGlobalImageFallbacks();
 startTelemetry({ apiBaseUrl, appSlug, appId });
 
 axios.defaults.headers.common["X-Peter-App"] = appSlug;
