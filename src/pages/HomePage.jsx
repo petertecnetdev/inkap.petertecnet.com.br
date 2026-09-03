@@ -32,12 +32,8 @@ export default function HomePage() {
   const token = localStorage.getItem("token");
 
   const [showCityModal, setShowCityModal] = useState(false);
-  const [currentCity, setCurrentCity] = useState(
-    localStorage.getItem("selectedCity")
-  );
-  const [currentUF, setCurrentUF] = useState(
-    localStorage.getItem("selectedUF")
-  );
+  const [, setCurrentCity] = useState(localStorage.getItem("selectedCity"));
+  const [, setCurrentUF] = useState(localStorage.getItem("selectedUF"));
 
   const { imageUrl } = useImageUtils(PLACEHOLDER);
 
@@ -67,13 +63,11 @@ export default function HomePage() {
     setShowCityModal(false);
   };
 
-  /* =================== STATES =================== */
   if (isLoading) {
     return (
       <>
         <GlobalNav />
         <div className="hp-wrapper hp-centered">
-        
           <div className="hp-loading">Carregando…</div>
         </div>
         <GlobalFooter />
@@ -93,21 +87,18 @@ export default function HomePage() {
     );
   }
 
-  /* =================== RENDER =================== */
   return (
     <>
       <GlobalNav />
 
       <main className="hp-wrapper">
-       
         <GlobalCarousel
           title="Estabelecimentos"
           items={establishments}
           navigate={(path) => navigate(path)}
           openSchedulePopup={async (item) => {
             const filteredEmployers = employers.filter(
-              (emp) =>
-                Number(emp.establishment_id) === Number(item.id)
+              (emp) => Number(emp.establishment_id) === Number(item.id)
             );
 
             await openSchedulePopup({
@@ -122,9 +113,7 @@ export default function HomePage() {
           title="Profissionais"
           items={employers}
           navigate={navigate}
-          openSchedulePopup={(item) =>
-            openSchedulePopup({ employer: item })
-          }
+          openSchedulePopup={(item) => openSchedulePopup({ employer: item })}
           showSchedule
         />
 
@@ -139,9 +128,7 @@ export default function HomePage() {
               item.entityId;
 
             const filteredEmployers = employers.filter(
-              (emp) =>
-                Number(emp.establishment_id) ===
-                Number(entityId)
+              (emp) => Number(emp.establishment_id) === Number(entityId)
             );
 
             openSchedulePopup({
@@ -180,7 +167,6 @@ export default function HomePage() {
         onSelectCity={handleSelectCity}
       />
 
-      {/* FOOTER FIXO MOBILE */}
       <GlobalFooter />
     </>
   );
