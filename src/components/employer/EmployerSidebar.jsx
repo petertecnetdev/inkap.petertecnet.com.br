@@ -4,17 +4,11 @@ import PropTypes from "prop-types";
 import LoginFormComponent from "../auth/LoginFormComponent";
 import "./EmployerSidebar.css";
 
-const fmtBRL = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-});
-
 export default function EmployerSidebar({
   employer,
   metrics,
   ordersSummary,
   userInteractions,
-  otherEmployers,
   imageUrl,
   handleImgError,
   navigate,
@@ -54,13 +48,16 @@ export default function EmployerSidebar({
     []
   );
 
-  const establishment = employer?.establishment || {};
+  const establishment = useMemo(
+    () => employer?.establishment || {},
+    [employer]
+  );
   const colleagues = useMemo(
     () =>
       establishment?.employers?.filter(
         (emp) => emp?.user && emp?.id !== employer?.id
       ) || [],
-    [establishment, employer]
+    [establishment, employer?.id]
   );
 
   if (!employer) return <div className="sidebar-loading-skeleton"></div>;
@@ -308,7 +305,6 @@ EmployerSidebar.propTypes = {
   metrics: PropTypes.object,
   ordersSummary: PropTypes.object,
   userInteractions: PropTypes.array,
-  otherEmployers: PropTypes.array,
   imageUrl: PropTypes.func.isRequired,
   handleImgError: PropTypes.func.isRequired,
   navigate: PropTypes.func.isRequired,
