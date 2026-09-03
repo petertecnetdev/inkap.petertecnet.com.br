@@ -49,7 +49,10 @@ function render() {
     return;
   }
 
+  const signature = JSON.stringify(cards);
   let host = document.getElementById(HOST_ID);
+  if (host?.dataset.insightSignature === signature) return;
+
   if (!host) {
     host = document.createElement("section");
     host.id = HOST_ID;
@@ -63,6 +66,7 @@ function render() {
     heading.insertAdjacentElement("afterend", host);
   }
 
+  host.dataset.insightSignature = signature;
   host.replaceChildren(
     makeChart({
       title: "Atendimentos por estabelecimento",
