@@ -1,6 +1,7 @@
 import { startTelemetry } from "./telemetry";
 import { apiBaseUrl, appId, appSlug } from "./config";
 import { installGlobalImageFallbacks } from "./utils/imageFallback";
+import { installPasswordFieldEnhancer } from "./utils/passwordFieldEnhancer";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import axios from "axios";
@@ -10,6 +11,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 installGlobalImageFallbacks();
+installPasswordFieldEnhancer();
 startTelemetry({ apiBaseUrl, appSlug, appId });
 
 axios.defaults.headers.common["X-Peter-App"] = appSlug;
