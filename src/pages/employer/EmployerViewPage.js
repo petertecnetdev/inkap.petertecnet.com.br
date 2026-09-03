@@ -13,7 +13,6 @@ import { apiBaseUrl } from "../../config";
 import useAppointment from "../../hooks/useAppointment";
 import useEmployerView from "../../hooks/useEmployerView";
 import useItemsFilter from "../../hooks/useItemsFilter";
-import useWhatsappLink from "../../hooks/useWhatsappLink";
 import useImageUtils from "../../hooks/useImageUtils";
 import useScrollControl from "../../hooks/useScrollControl";
 import useAuthPrompt from "../../hooks/useAuthPrompt";
@@ -39,7 +38,6 @@ export default function EmployerViewPage() {
     otherItems,
     items,
     ordersSummary,
-    isLoading,
   } = useEmployerView(apiBaseUrl, user_name, token, navigate);
 
   const { services, products } = useItemsFilter(items);
@@ -81,8 +79,8 @@ export default function EmployerViewPage() {
 
   const u = employer.user || {};
   const whatsappLink = u.phone
-  ? `https://wa.me/${u.phone.replace(/\D/g, "")}?text=Olá! Encontrei seu perfil no Rasoio e gostaria de agendar um horário com você. Podemos conversar?`
-  : null;
+    ? `https://wa.me/${u.phone.replace(/\D/g, "")}?text=Olá! Encontrei seu perfil no Rasoio e gostaria de agendar um horário com você. Podemos conversar?`
+    : null;
 
   return (
     <div className="empv-root">
@@ -149,17 +147,16 @@ export default function EmployerViewPage() {
             {metrics && <EmployerMetrics metrics={metrics} />}
           </Col>
 
-          
-          <Col md={12}> <GlobalRotativity
+          <Col md={12}>
+            <GlobalRotativity
               otherEstablishments={otherEstablishments}
               otherEmployers={otherEmployers}
               otherItems={otherItems}
               navigate={navigate}
               openSchedulePopup={openSchedulePopup}
               fmtBRL={fmtBRL}
-            /></Col>
-
-           
+            />
+          </Col>
         </Row>
       </Container>
 
