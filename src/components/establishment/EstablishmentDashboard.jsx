@@ -1,7 +1,6 @@
 // src/components/establishment/EstablishmentDashboard.jsx
 import React from "react";
 import PropTypes from "prop-types";
-import { Row, Col } from "react-bootstrap";
 import GlobalCard from "../GlobalCard";
 import EstablishmentActionsBar from "./EstablishmentActionsBar";
 import "./EstablishmentDashboard.css";
