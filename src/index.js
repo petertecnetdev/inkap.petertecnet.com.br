@@ -9,6 +9,7 @@ import App from "./App";
 import PeterAccountGateway from "./components/PeterAccountGateway";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./PeterBrandingBridge.css";
 
 installGlobalImageFallbacks();
 installPasswordFieldEnhancer();
