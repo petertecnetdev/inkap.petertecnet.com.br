@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { apiBaseUrl, appId } from "../../config";
 
 import useItemProductHome from "../../hooks/useItemProductHome";
-import useImageUtils from "../../hooks/useImageUtils";
 
 import { Row, Col } from "react-bootstrap";
 
@@ -13,8 +12,6 @@ import CitySelectorModal from "../../components/CitySelectorModal";
 import HomeHeader from "../../components/home/HomeHeader";
 import GlobalCard from "../../components/GlobalCard";
 
-const PLACEHOLDER = "/images/logo.png";
-
 export default function ItemProductHomePage() {
   const { productItems, isLoading, error } = useItemProductHome(apiBaseUrl, appId);
   const navigate = useNavigate();
@@ -22,8 +19,6 @@ export default function ItemProductHomePage() {
   const [showCityModal, setShowCityModal] = useState(false);
   const [currentCity, setCurrentCity] = useState(localStorage.getItem("selectedCity"));
   const [currentUF, setCurrentUF] = useState(localStorage.getItem("selectedUF"));
-
-  const { imageUrl } = useImageUtils(PLACEHOLDER);
 
   const handleChangeCity = () => setShowCityModal(true);
   const handleSelectCity = ({ city, uf }) => {
