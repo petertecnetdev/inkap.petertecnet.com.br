@@ -4,17 +4,8 @@ import PropTypes from "prop-types";
 import LoginFormComponent from "../auth/LoginFormComponent";
 import "./EstablishmentSidebar.css";
 
-const fmtBRL = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-});
-
 export default function EstablishmentSidebar({
   establishment,
-  metrics,
-  ordersSummary,
-  userInteractions,
-  otherEstablishments,
   imageUrl,
   handleImgError,
   navigate,
@@ -175,10 +166,6 @@ export default function EstablishmentSidebar({
 
 EstablishmentSidebar.propTypes = {
   establishment: PropTypes.object,
-  metrics: PropTypes.object,
-  ordersSummary: PropTypes.object,
-  userInteractions: PropTypes.array,
-  otherEstablishments: PropTypes.array,
   imageUrl: PropTypes.func.isRequired,
   handleImgError: PropTypes.func.isRequired,
   navigate: PropTypes.func.isRequired,
