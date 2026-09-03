@@ -7,7 +7,7 @@ import React, {
   useState,
 } from "react";
 import PropTypes from "prop-types";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { AuthContext } from "../App";
 import useImageUtils from "../hooks/useImageUtils";
@@ -18,14 +18,8 @@ import "./GlobalNav.css";
 
 export default function GlobalNav({ loadingMenu, handleLogout }) {
   const { user } = useContext(AuthContext);
-
   const location = useLocation();
-  const navigate = useNavigate();
-
-  /* =================== PROCESSING (LOGOUT) =================== */
   const [processing, setProcessing] = useState(false);
-
-  /* =================== AUTH =================== */
   const isAuthed = !!user;
 
   const fullName = useMemo(() => {
@@ -56,19 +50,13 @@ export default function GlobalNav({ loadingMenu, handleLogout }) {
     return imageUrl(raw) || placeholderSvg || "/images/user.png";
   }, [user, imageUrl, placeholderSvg]);
 
-  /* =================== UI =================== */
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-
   const userMenuRef = useRef(null);
-  const mobileRef = useRef(null);
 
   const closeAll = () => {
-    setMobileOpen(false);
     setUserMenuOpen(false);
   };
 
-  /* =================== CITY =================== */
   const [showCityModal, setShowCityModal] = useState(false);
   const [currentCity, setCurrentCity] = useState(
     localStorage.getItem("selectedCity")
@@ -90,27 +78,23 @@ export default function GlobalNav({ loadingMenu, handleLogout }) {
       ? `${currentCity} / ${currentUF}`
       : "Localização não definida";
 
-  /* =================== LOGOUT =================== */
- const onLogout = async () => {
-  setProcessing(true);
+  const onLogout = async () => {
+    setProcessing(true);
 
-  try {
-    if (handleLogout) {
-      await handleLogout();
+    try {
+      if (handleLogout) {
+        await handleLogout();
+      }
+    } catch {
+      // O logout local continua mesmo se a API falhar.
+    } finally {
+      localStorage.clear();
+      closeAll();
+      window.dispatchEvent(new Event("authChanged"));
+      window.location.replace("/login");
     }
-  } catch {
-    // ignora erro
-  } finally {
-    localStorage.clear();
-    closeAll();
-    window.dispatchEvent(new Event("authChanged"));
+  };
 
-    // 🔥 HARD REDIRECT — desmonta tudo
-    window.location.replace("/login");
-  }
-};
-
-  /* =================== EFFECTS =================== */
   useEffect(() => closeAll(), [location.pathname]);
 
   useEffect(() => {
@@ -118,33 +102,26 @@ export default function GlobalNav({ loadingMenu, handleLogout }) {
       if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
         setUserMenuOpen(false);
       }
-      if (mobileRef.current && !mobileRef.current.contains(e.target)) {
-        setMobileOpen(false);
-      }
     };
     document.addEventListener("mousedown", onDocMouseDown);
-    return () =>
-      document.removeEventListener("mousedown", onDocMouseDown);
+    return () => document.removeEventListener("mousedown", onDocMouseDown);
   }, []);
 
   const navIsLoading = !!loadingMenu;
 
-  /* =================== BLOCK UI DURING LOGOUT =================== */
   if (processing) {
     return (
       <ProcessingIndicatorComponent
         gifSrc="/images/logo.gif"
-        minDuration={0} // 🚫 sem delay em logout
+        minDuration={0}
       />
     );
   }
 
-  /* =================== RENDER =================== */
   return (
     <>
       <header className="inkapnav">
         <div className="inkapnav__bar">
-          {/* LEFT */}
           <div className="inkapnav__left">
             <Link to="/" className="inkapnav__brand">
               <img
@@ -154,7 +131,6 @@ export default function GlobalNav({ loadingMenu, handleLogout }) {
               />
             </Link>
 
-            {/* LINKS PÚBLICOS */}
             <nav className="inkapnav__links">
               <Link to="/establishments" className="inkapnav__link">
                 Estabelecimentos
@@ -173,9 +149,7 @@ export default function GlobalNav({ loadingMenu, handleLogout }) {
             <div className="inkapnav__locationWrap">
               <div className="inkapnav__location">
                 <span className="inkapnav__locationDot" />
-                <span className="inkapnav__locationText">
-                  {locationText}
-                </span>
+                <span className="inkapnav__locationText">{locationText}</span>
               </div>
 
               <button
@@ -187,7 +161,6 @@ export default function GlobalNav({ loadingMenu, handleLogout }) {
             </div>
           </div>
 
-          {/* RIGHT */}
           <div className="inkapnav__right">
             {!navIsLoading && !isAuthed && (
               <div className="inkapnav__authActions">
@@ -210,9 +183,7 @@ export default function GlobalNav({ loadingMenu, handleLogout }) {
               <div className="inkapnav__user" ref={userMenuRef}>
                 <button
                   className="inkapnav__userBtn"
-                  onClick={() =>
-                    setUserMenuOpen((v) => !v)
-                  }
+                  onClick={() => setUserMenuOpen((v) => !v)}
                 >
                   <img
                     src={avatarSrc}
@@ -220,9 +191,7 @@ export default function GlobalNav({ loadingMenu, handleLogout }) {
                     className="inkapnav__avatar"
                     onError={handleImgError}
                   />
-                  <span className="inkapnav__userName">
-                    {fullName}
-                  </span>
+                  <span className="inkapnav__userName">{fullName}</span>
                 </button>
 
                 {userMenuOpen && (
