@@ -18,8 +18,11 @@ export default function GlobalCard({
   const cardRef = useRef(null);
   const [broken, setBroken] = useState(false);
 
-  const safeItem = item || {};
-  const establishment = safeItem.establishment || {};
+  const safeItem = useMemo(() => item || {}, [item]);
+  const establishment = useMemo(
+    () => safeItem.establishment || {},
+    [safeItem]
+  );
 
   const handleImgError = (e) => {
     baseHandleImgError(e);
@@ -64,8 +67,7 @@ export default function GlobalCard({
     const parts = safeItem.name.trim().split(" ");
     return parts.length === 1
       ? parts[0][0].toUpperCase()
-      : parts[0][0].toUpperCase() +
-          parts.at(-1)[0].toUpperCase();
+      : parts[0][0].toUpperCase() + parts.at(-1)[0].toUpperCase();
   }, [safeItem]);
 
   const getShape = useCallback(() => {
@@ -192,32 +194,27 @@ export default function GlobalCard({
         )}
 
         {safeItem.price !== undefined && (
-          <div className="carousel-item-price">
-            {fmtBRL(safeItem.price)}
-          </div>
+          <div className="carousel-item-price">{fmtBRL(safeItem.price)}</div>
         )}
 
-        {safeItem.duration !== null &&
-          safeItem.duration !== undefined && (
-            <div className="text-light-50 small mb-1">
-              {safeItem.duration} min
-            </div>
-          )}
+        {safeItem.duration !== null && safeItem.duration !== undefined && (
+          <div className="text-light-50 small mb-1">{safeItem.duration} min</div>
+        )}
 
         <div className="d-flex flex-wrap gap-2 mt-2">
-  {safeItem.metrics && (
-    <>
-      <Badge bg="secondary" className="px-2 py-1 rounded-pill">
-        {safeItem.metrics.total_views ?? 0} Views
-      </Badge>
-      {'completed_orders' in safeItem.metrics && (
-        <Badge bg="secondary" className="px-2 py-1 rounded-pill">
-          {safeItem.metrics.completed_orders ?? 0} Pedidos
-        </Badge>
-      )}
-    </>
-  )}
-</div>
+          {safeItem.metrics && (
+            <>
+              <Badge bg="secondary" className="px-2 py-1 rounded-pill">
+                {safeItem.metrics.total_views ?? 0} Views
+              </Badge>
+              {"completed_orders" in safeItem.metrics && (
+                <Badge bg="secondary" className="px-2 py-1 rounded-pill">
+                  {safeItem.metrics.completed_orders ?? 0} Pedidos
+                </Badge>
+              )}
+            </>
+          )}
+        </div>
 
         {navigate && (
           <div className="mt-2">
@@ -246,11 +243,7 @@ export default function GlobalCard({
           </GlobalButton>
         )}
 
-        {actions && (
-          <div className="mt-3 establishment-actions-slot">
-            {actions}
-          </div>
-        )}
+        {actions && <div className="mt-3 establishment-actions-slot">{actions}</div>}
       </div>
     </div>
   );
