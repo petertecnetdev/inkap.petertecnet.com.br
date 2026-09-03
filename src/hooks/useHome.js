@@ -17,8 +17,9 @@ const distributeItems = (items) => {
   let lastEstId = null;
 
   while (Object.keys(groups).length) {
+    const previousEstId = lastEstId;
     const candidates = Object.keys(groups).filter(
-      (id) => id !== lastEstId && groups[id].length
+      (id) => id !== previousEstId && groups[id].length
     );
 
     const selectedId = candidates.length
@@ -80,7 +81,6 @@ export default function useHome(apiBaseUrl, appId) {
 
         if (!active) return;
 
-        // Mapeia establishments
         const mappedEstablishments = (estRes.data?.establishments || []).map((est) => ({
           ...est,
           type: "establishment",
@@ -92,7 +92,6 @@ export default function useHome(apiBaseUrl, appId) {
           },
         }));
 
-        // Mapeia employers
         const mappedEmployers = (empRes.data?.employers || []).map((emp) => {
           const firstName = emp.user?.first_name || "";
           const lastName = emp.user?.last_name || "";
@@ -110,7 +109,6 @@ export default function useHome(apiBaseUrl, appId) {
           };
         });
 
-        // Mapeia items
         const mappedItems = (itemRes.data?.items || []).map((item) => ({
           ...item,
           type: item.type,
@@ -119,7 +117,6 @@ export default function useHome(apiBaseUrl, appId) {
 
         const orderedItems = distributeItems(mappedItems);
 
-        // Atualiza estados
         setEstablishments(mappedEstablishments);
         setEmployers(mappedEmployers);
         setServiceItems(orderedItems.filter((item) => item.type === "service"));
