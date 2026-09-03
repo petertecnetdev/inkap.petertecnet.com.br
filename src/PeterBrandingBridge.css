@@ -1,0 +1,22 @@
+:root {
+  --i-primary: var(--peter-brand-primary, #b46cff) !important;
+  --i-primary-2: var(--peter-brand-secondary, #9f4dff) !important;
+  --i-primary-3: var(--peter-brand-accent, #7b2cff) !important;
+  --i-primary-deep: var(--peter-brand-primary-dark, #4b0fb3) !important;
+  --i-accent: var(--peter-brand-accent, #c084fc) !important;
+  --i-glass: rgba(var(--peter-brand-primary-rgb, 180, 108, 255), .10) !important;
+  --i-glow-sm: 0 0 10px rgba(var(--peter-brand-primary-rgb, 180, 108, 255), .45) !important;
+  --i-glow-md: 0 0 18px rgba(var(--peter-brand-primary-rgb, 180, 108, 255), .55), 0 0 38px rgba(var(--peter-brand-accent-rgb, 123, 44, 255), .35) !important;
+  --i-glow-lg: 0 0 30px rgba(var(--peter-brand-primary-rgb, 180, 108, 255), .65), 0 0 70px rgba(var(--peter-brand-accent-rgb, 123, 44, 255), .45) !important;
+  --i-grad-primary: var(--peter-brand-gradient, linear-gradient(90deg, #7b2cff 0%, #b46cff 50%, #9f4dff 100%)) !important;
+  --i-grad-outline: linear-gradient(90deg, rgba(var(--peter-brand-primary-rgb, 180, 108, 255), .35), rgba(var(--peter-brand-secondary-rgb, 159, 77, 255), .35)) !important;
+  --i-focus-ring: 0 0 0 3px rgba(var(--peter-brand-primary-rgb, 180, 108, 255), .35) !important;
+  --swal-accent: var(--i-primary) !important;
+  --swal-accent-hover: var(--i-primary-2) !important;
+}
+
+.u-btn,
+.u-nav-fixed .tabs button.active,
+.swal2-styled.swal2-confirm {
+  background: var(--i-grad-primary) !important;
+}
