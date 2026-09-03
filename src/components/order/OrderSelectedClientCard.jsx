@@ -9,7 +9,7 @@ export default function OrderSelectedClientCard({ client, onClear }) {
   const { imageUrl } = useImageUtils();
   const [broken, setBroken] = useState(false);
 
-  const safeClient = client || {};
+  const safeClient = useMemo(() => client || {}, [client]);
 
   const safeItem = useMemo(
     () => ({
@@ -43,8 +43,7 @@ export default function OrderSelectedClientCard({ client, onClear }) {
     const parts = safeItem.name.split(" ");
     return parts.length === 1
       ? parts[0][0].toUpperCase()
-      : parts[0][0].toUpperCase() +
-          parts.at(-1)[0].toUpperCase();
+      : parts[0][0].toUpperCase() + parts.at(-1)[0].toUpperCase();
   }, [safeItem]);
 
   const placeholderSvg = useMemo(() => {
