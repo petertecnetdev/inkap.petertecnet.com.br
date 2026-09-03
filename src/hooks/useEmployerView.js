@@ -40,7 +40,6 @@ export default function useEmployerView(apiBaseUrl, userName, token, navigate) {
         setOtherEstablishments(d.other_establishments || []);
         setOtherEmployers(d.other_employers || []);
         setOtherItems(d.other_items || []);
-
         setColleagues(d.colleagues || []);
         setAverageEngagement(d.average_engagement_score || 0);
         setTopItemAndClient(d.top_item_and_client || null);
@@ -63,7 +62,7 @@ export default function useEmployerView(apiBaseUrl, userName, token, navigate) {
     return () => {
       active = false;
     };
-  }, [userName, token, navigate]);
+  }, [apiBaseUrl, userName, token, navigate]);
 
   return {
     employer,
