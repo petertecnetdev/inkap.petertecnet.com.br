@@ -9,8 +9,7 @@ export default function OrderSelectedEmployerCard({ employer, onClear }) {
   const { imageUrl } = useImageUtils();
   const [broken, setBroken] = useState(false);
 
-  const safeEmployer = employer || {};
-  const user = safeEmployer.user || {};
+  const user = useMemo(() => employer?.user || {}, [employer]);
 
   const safeItem = useMemo(
     () => ({
@@ -44,8 +43,7 @@ export default function OrderSelectedEmployerCard({ employer, onClear }) {
     const parts = safeItem.name.split(" ");
     return parts.length === 1
       ? parts[0][0].toUpperCase()
-      : parts[0][0].toUpperCase() +
-          parts.at(-1)[0].toUpperCase();
+      : parts[0][0].toUpperCase() + parts.at(-1)[0].toUpperCase();
   }, [safeItem]);
 
   const placeholderSvg = useMemo(() => {
