@@ -46,7 +46,7 @@ export default function EstablishmentCreateForm({
   });
 
   const [logoPreview, setLogoPreview] = useState(null);
-  const [backgroundPreview, setBackgroundPreview] = useState(null);
+  const [, setBackgroundPreview] = useState(null);
   const [segments, setSegments] = useState([]);
   const [files, setFiles] = useState({});
 
@@ -92,7 +92,6 @@ export default function EstablishmentCreateForm({
 
   return (
     <>
-      {/* HERO */}
       <div className="estab-hero">
         <div className="estab-hero-inner">
           <div className="estab-logo-bubble">
@@ -116,7 +115,6 @@ export default function EstablishmentCreateForm({
         </div>
       </div>
 
-      {/* UPLOADS */}
       <div className="d-flex justify-content-center gap-3 my-4">
         <GlobalButton onClick={() => document.getElementById("logoInput").click()}>
           Upload Logo
@@ -149,7 +147,6 @@ export default function EstablishmentCreateForm({
         }
       />
 
-      {/* FORM ÚNICO */}
       <Form onSubmit={handleSubmit(submit)}>
         <EstablishmentCreateFields
           register={register}
