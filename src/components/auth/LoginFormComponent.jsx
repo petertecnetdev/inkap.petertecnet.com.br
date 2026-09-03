@@ -14,6 +14,7 @@ export default function LoginFormComponent({
 }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const { login, loginGoogle } = useLogin(
     (token) => {
@@ -43,17 +44,30 @@ export default function LoginFormComponent({
         className="neon-input mb-3"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+        autoComplete="username"
         required
       />
 
-      <Form.Control
-        type="password"
-        placeholder="Senha"
-        className="neon-input mb-4"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
+      <div className="password-input-wrap mb-4">
+        <Form.Control
+          type={showPassword ? "text" : "password"}
+          placeholder="Senha"
+          className="neon-input password-input"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          autoComplete="current-password"
+          required
+        />
+        <button
+          type="button"
+          className="password-visibility-toggle"
+          onClick={() => setShowPassword((visible) => !visible)}
+          aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+          aria-pressed={showPassword}
+        >
+          {showPassword ? "Ocultar" : "Mostrar"}
+        </button>
+      </div>
 
       <Button type="submit" className="neon-button w-100 mb-3">
         Entrar
