@@ -46,7 +46,6 @@ export default function EstablishmentViewPage() {
     items,
     employers,
     ordersSummary,
-    completedAppointments,
     isLoading,
   } = useEstablishmentView(apiBaseUrl, slug, token, navigate);
 
