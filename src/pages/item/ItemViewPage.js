@@ -253,7 +253,7 @@ export default function ItemViewPage() {
         onHide={() => setShowWizard(false)}
         employers={mappedEmployers}
         services={wizardOptions.services}
-        loadAvailableTimes={loadAvailableTimes} // <-- Corrigido aqui
+        loadAvailableTimes={loadAvailableTimes}
         imageUrl={imageUrl}
         preselectedService={wizardOptions.preselectedService}
         preselectedEmployer={wizardOptions.preselectedEmployer}
@@ -264,7 +264,7 @@ export default function ItemViewPage() {
 
     <WhatsappButton
   link={whatsappLink}
-  message={`Olá! Gostaria de mais informações sobre o item "${item.name}", anunciado pelo estabelecimento "${establishment?.name ?? "—"}" no app Rasoio.`}
+  message={`Olá, gostaria de saber mais informações sobre o item "${item.name}". Você poderia me ajudar?`}
 />
 
 
