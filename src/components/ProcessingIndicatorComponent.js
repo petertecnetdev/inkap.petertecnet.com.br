@@ -1,75 +1,76 @@
-// src/components/ProcessingIndicatorComponent.jsx
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import "./ProcessingIndicatorComponent.css";
 
+const DEFAULT_MESSAGES = [
+  "Preparando sua experiência no Inkap…",
+  "Organizando serviços e agendamentos…",
+  "Conectando profissionais e estabelecimentos…",
+  "Quase lá — tudo está ficando pronto.",
+];
+
 const ProcessingIndicatorComponent = ({
-  messages = ["Carregando..."],
-  interval = 5000,
+  messages = DEFAULT_MESSAGES,
+  interval = 2600,
   gifSrc = "/images/logo.gif",
-  minDuration = 0, // ⏱ tempo mínimo visível (0 = sem retenção)
+  minDuration = 0,
 }) => {
-  const msgRef = useRef(0);
-  const mountedAtRef = useRef(Date.now());
-  const timeoutRef = useRef(null);
+  const safeMessages = useMemo(
+    () => (Array.isArray(messages) && messages.filter(Boolean).length ? messages.filter(Boolean) : DEFAULT_MESSAGES),
+    [messages],
+  );
+  const [index, setIndex] = useState(0);
 
-  const [current, setCurrent] = useState(messages[0] || "");
-  const [canHide, setCanHide] = useState(minDuration === 0);
-
-  // controla tempo mínimo SOMENTE enquanto o componente estiver montado
   useEffect(() => {
-    mountedAtRef.current = Date.now();
+    setIndex(0);
+    if (safeMessages.length < 2) return undefined;
 
-    if (minDuration > 0) {
-      timeoutRef.current = setTimeout(() => {
-        setCanHide(true);
-      }, minDuration);
-    }
-
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [minDuration]);
-
-  // alternância de mensagens
-  useEffect(() => {
-    if (!messages?.length) return;
-
-    const iv = setInterval(() => {
-      msgRef.current = (msgRef.current + 1) % messages.length;
-      setCurrent(messages[msgRef.current]);
+    const timer = window.setInterval(() => {
+      setIndex((current) => (current + 1) % safeMessages.length);
     }, interval);
 
-    return () => clearInterval(iv);
-  }, [messages, interval]);
+    return () => window.clearInterval(timer);
+  }, [interval, safeMessages]);
 
-  // ⚠️ Importante:
-  // O componente NÃO tenta se esconder sozinho.
-  // Ele só impede desmontagem precoce se minDuration > 0.
-  if (!canHide) {
-    // ainda dentro do tempo mínimo → força exibição
-  }
+  const currentMessage = safeMessages[index] || safeMessages[0] || "Carregando…";
 
   return (
-    <div className="processing-overlay" role="status" aria-live="polite">
-      <div className="processing-inner">
-        {gifSrc && (
-          <div className="processing-gif-wrap">
-            <img
-              className="processing-gif"
-              src={gifSrc}
-              alt="Carregando"
-              decoding="async"
-              draggable={false}
-            />
-          </div>
-        )}
+    <div
+      className="processing-overlay"
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+      aria-label={currentMessage}
+      data-min-duration={minDuration || undefined}
+    >
+      <div className="processing-ambient" aria-hidden="true">
+        <i className="processing-spark processing-spark--one" />
+        <i className="processing-spark processing-spark--two" />
+        <i className="processing-spark processing-spark--three" />
+      </div>
 
-        <div className="processing-text">
-          <div className="processing-message">{current}</div>
+      <div className="processing-card">
+        <div className="processing-scene" aria-hidden="true">
+          <span className="processing-ring processing-ring--outer" />
+          <span className="processing-ring processing-ring--inner" />
+          <span className="processing-pulse" />
+          <div className="processing-gif-wrap">
+            {gifSrc ? (
+              <img className="processing-gif" src={gifSrc} alt="" decoding="async" draggable={false} />
+            ) : (
+              <span className="processing-monogram">I</span>
+            )}
+          </div>
         </div>
+
+        <div className="processing-copy">
+          <span className="processing-kicker">Peter Tecnet</span>
+          <strong>Inkap</strong>
+          <span className="processing-message" key={currentMessage}>{currentMessage}</span>
+        </div>
+
+        <div className="processing-progress" aria-hidden="true"><span /></div>
+        <div className="processing-beat" aria-hidden="true"><i /><i /><i /><i /><i /></div>
       </div>
     </div>
   );
