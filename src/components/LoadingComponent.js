@@ -1,6 +1,6 @@
 // LoadingIndicator.js
 import React from 'react';
-import loadingImage from '../images/logo.gif';
+import loadingImage from '../images/logo.png';
 
 const LoadingComponent = () => {
   return (
