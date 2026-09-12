@@ -124,7 +124,7 @@ function AppInner() {
 
   if (initialLoading) {
     return (
-      <ProcessingIndicatorComponent interval={1000} gifSrc="/images/logo.gif" />
+      <ProcessingIndicatorComponent interval={1000} gifSrc="/images/logo.png" />
     );
   }
 
@@ -166,7 +166,7 @@ function AppInner() {
         {isLoading && (
           <ProcessingIndicatorComponent
             interval={1000}
-            gifSrc="/images/logo.gif"
+            gifSrc="/images/logo.png"
           />
         )}
 
