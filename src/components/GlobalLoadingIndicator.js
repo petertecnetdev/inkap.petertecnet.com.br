@@ -1,6 +1,6 @@
 // src/components/GlobalLoadingIndicator.js
 import React from "react";
-import loadingImage from "../images/logo.gif";
+import loadingImage from "../images/logo.png";
 
 export default function GlobalLoadingIndicator() {
   return (
