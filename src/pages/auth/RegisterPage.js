@@ -30,7 +30,7 @@ export default function RegisterPage() {
                   className="rp-logo"
                   onError={(e) => {
                     e.currentTarget.onerror = null;
-                    e.currentTarget.src = "/images/logo.gif";
+                    e.currentTarget.src = "/images/logo.png";
                   }}
                 />
               </div>
