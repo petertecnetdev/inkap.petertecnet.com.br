@@ -112,7 +112,7 @@ export default function GlobalNav({ loadingMenu, handleLogout }) {
   if (processing) {
     return (
       <ProcessingIndicatorComponent
-        gifSrc="/images/logo.gif"
+        gifSrc="/images/logo.png"
         minDuration={0}
       />
     );
