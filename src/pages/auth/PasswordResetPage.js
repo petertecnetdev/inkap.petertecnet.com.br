@@ -106,7 +106,7 @@ export default function PasswordResetPage() {
                     className="pr-logo"
                     onError={(e) => {
                       e.currentTarget.onerror = null;
-                      e.currentTarget.src = "/images/logo.gif";
+                      e.currentTarget.src = "/images/logo.png";
                     }}
                   />
                 </div>
