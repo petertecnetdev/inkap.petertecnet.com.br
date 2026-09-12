@@ -25,7 +25,7 @@ export default function LoginPage() {
   if (processing) {
     return (
       <ProcessingIndicatorComponent
-        gifSrc="/images/logo.gif"
+        gifSrc="/images/logo.png"
         minDuration={900}
       />
     );
@@ -48,7 +48,7 @@ export default function LoginPage() {
                   className="lp-logo"
                   onError={(e) => {
                     e.currentTarget.onerror = null;
-                    e.currentTarget.src = "/images/logo.gif";
+                    e.currentTarget.src = "/images/logo.png";
                   }}
                 />
               </div>
